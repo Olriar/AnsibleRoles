@@ -1,0 +1,27 @@
+- name: apt-get update
+  raw: apt-get update
+  sudo: yes
+
+#- name: apt-get upgrade
+#  raw: apt-get upgrade --yes
+#  sudo: yes
+
+- name: install base package
+  apt: name={{ item }} state=present
+  with_items:
+    - vim
+    - git-core
+    - python-dev
+    - python-pip
+    - bison
+    - libasound2-dev
+    - libportaudio-dev
+    - python-pyaudio
+
+- name: activate microphone
+  lineinfile: dest=/etc/modprobe.d/alsa-base.conf backup=yes regexp='^options\ snd-usb-audio\ index=' line='options snd-usb-audio index=0'
+  sudo: yes
+
+- name: reload alsa
+  raw: alsa force-reload
+  sudo: yes

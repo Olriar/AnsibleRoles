@@ -1,0 +1,9 @@
+- name: install Jasper
+  git: repo=https://github.com/jasperproject/jasper-client.git dest={{ ansible_env.HOME }}/jasper recursive=yes
+
+- name: update pip
+  raw: pip install --upgrade setuptools
+  sudo: yes
+
+- name: make sure jasper executable
+  file: path={{ ansible_env.HOME }}/jasper/jasper.py
